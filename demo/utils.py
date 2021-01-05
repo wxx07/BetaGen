@@ -7,18 +7,27 @@ Created on Sat Aug 29 18:27:05 2020
 
 import py3Dmol
 
-def show_lig_betas(lig_betas_sdf):
+def show_betas_lig(betas_lig_sdf, is_point_cloud=False):
 
-    all_sdf = open(lig_betas_sdf,"r").readlines()
+    all_sdf = open(betas_lig_sdf,"r").readlines()
     all_sdf = "".join(list(all_sdf))
 
     view = py3Dmol.view()
     view.addModels(all_sdf,'sdf') 
-    view.setStyle({"model":0},{"sphere":{"radius":0.5,"color":"0x33FF38"}}) 
-    view.setStyle({"model":1},{"stick":{}})
+    view.setStyle({"model":0},{"sphere":{"radius":0.5,"color":"0x33FF38"}})
+    if is_point_cloud: # 配体原子没有键连信息
+        view.setStyle({"model":1},{"sphere":{"radius":0.5}})
+    else:
+        view.setStyle({"model":1},{"stick":{}})
 
     view.zoomTo()
     return view
+
+def show_lig_betas(betas_lig_sdf):
+    """Reserved for some Deprecated usage
+    Use `show_betas_lig`
+    """
+    return show_betas_lig(betas_lig_sdf)
 
 
 def show_gen_step(step_i):
